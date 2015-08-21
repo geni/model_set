@@ -417,6 +417,16 @@ class ModelSet
     opt
   end
 
+  def select_fields!(*fields)
+    fields << id_field
+    @select_fields = fields.collect do |field|
+      field = field.to_s
+      field.index('.') ? field : [table_name, field].join('.')
+    end.uniq
+
+    self.clear_cache!
+  end
+
   def add_fields!(fields)
     raise 'cannot use both add_fields and include_models' if @included_models
     ( @add_fields ||= {} ).merge!(fields)
@@ -622,10 +632,10 @@ private
     ids_to_fetch = ids_to_fetch - models_by_id.keys
 
     if not ids_to_fetch.empty?
-      if @add_fields.nil? and @included_models.nil?
+      if @select_fields.nil? and @add_fields.nil? and @included_models.nil?
         models = model_class.send("find_all_by_#{id_field}", ids_to_fetch.to_a)
       else
-        fields = ["#{table_name}.*"]
+        fields = @select_fields || ["#{table_name}.*"]
         joins  = []
         @add_fields and @add_fields.each do |field, join|
           fields << field
