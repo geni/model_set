@@ -30,7 +30,7 @@ class ModelSet
 
     def anchor!(query)
       add_filters!( id_field => query.ids.to_a )
-    end        
+    end
 
     def add_filters!(filters)
       @filters ||= []
@@ -192,7 +192,7 @@ class ModelSet
         end
 
         begin
-          @response = timeout(max_query_time) do
+          @response = Timeout.timeout(max_query_time) do
             search.Query(opts[:query], index)
           end
           unless response
@@ -205,7 +205,7 @@ class ModelSet
           e.opts = opts
           on_exception(e)
         end
-        
+
         @count = [response['total_found'], max_results].min
         @ids   = response['matches'].collect {|match| set_class.as_id(match[id_field])}.to_ordered_set
         @size  = @ids.size
@@ -213,7 +213,7 @@ class ModelSet
         after_query(opts)
       end
     end
-    
+
     def filter_values(values)
       Array(values).collect do |value|
         case value
