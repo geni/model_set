@@ -1,10 +1,12 @@
-require 'shoulda'
+require 'test/unit'
 require 'pp'
 
-require 'simplecov'
-SimpleCov.start do
-  add_filter 'test'
-  add_filter 'vendor'
+unless $SKIP_COVERAGE
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter 'test'
+    add_filter 'vendor'
+  end
 end
 
 require 'model_set'

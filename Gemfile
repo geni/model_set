@@ -12,11 +12,9 @@ end
 
 group :development, :test do
   gem 'method_source'
-  gem 'minitest' # for shoulda-matchers
   gem 'pg'
   gem 'rake'
   gem 'rsolr'
-  gem 'shoulda'
   gem 'simplecov',  :require => false
   gem 'test-unit' # for shoulda-context
 end
