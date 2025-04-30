@@ -1,6 +1,15 @@
 require 'test/unit'
 require 'pp'
 
+module CaptureRubyWarnings
+  def warn(message)
+    return if caller[0] =~ /vendor/ # Ignore warnings from vendored code
+    super
+  end
+end
+
+Warning.extend(CaptureRubyWarnings)
+
 unless $SKIP_COVERAGE
   require 'simplecov'
   SimpleCov.start do
