@@ -17,7 +17,7 @@ class ModelSet
         set.clone
       end
     end
-    
+
     def size
       if limit
         [count - offset, limit].min
@@ -29,6 +29,6 @@ class ModelSet
     def count
       set.size
     end
-    
+
   end
 end

@@ -1,6 +1,7 @@
 *~
 .bash_history
 .bundle
+coverage/
 Gemfile.lock
 notes.txt
 pkg/
