@@ -427,7 +427,7 @@ class ModelSet
   end
 
   def add_fields!(fields)
-    raise 'cannot use both add_fields and include_models' if @included_models
+    raise 'cannot use both add_fields and include_models' if defined?(@included_models)
     ( @add_fields ||= {} ).merge!(fields)
 
     # We have to reload the models because we are adding additional fields.
@@ -631,6 +631,10 @@ private
     ids_to_fetch = ids_to_fetch - models_by_id.keys
 
     if not ids_to_fetch.empty?
+      @select_fields    = nil unless defined?(@select_fields)
+      @add_fields       = nil unless defined?(@add_fields)
+      @included_models  = nil unless defined?(@included_models)
+
       if @select_fields.nil? and @add_fields.nil? and @included_models.nil?
         models = model_class.send("find_all_by_#{id_field}", ids_to_fetch.to_a)
       else

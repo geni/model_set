@@ -15,6 +15,7 @@ class ModelSet
       end
       return self if new_conditions.empty?
 
+      @conditions = nil unless defined?(@conditions)
       @conditions = to_conditions(*new_conditions) << @conditions
       clear_cache!
     end

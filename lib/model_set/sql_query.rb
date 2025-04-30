@@ -18,6 +18,7 @@ class ModelSet
 
     def ids
       if @ids.nil?
+        @limit_fetch = nil unless defined?(@limit_fetch)
         if @limit_fetch
           base_conditions = conditions
           @ids = [].to_ordered_set
@@ -32,7 +33,7 @@ class ModelSet
           self.conditions = base_conditions
         else
           @ids = fetch_id_set(sql)
-          @ids.reorder!(@reorder) if @reorder
+          @ids.reorder!(@reorder) if defined?(@reorder)
         end
       end
       @ids
@@ -107,16 +108,17 @@ class ModelSet
     end
 
     def order_clause
-      return unless @sort_order
+      return unless defined?(@sort_order)
       # Prevent SQL injection attacks.
       "ORDER BY #{@sort_order.join(', ').gsub(/[^\w_=<>+*\-\/, \.\(\)\[\]'\"]/, '')}"
     end
 
     def join_clause
-      return unless @joins or @sort_join
+      return unless defined?(@joins) || defined?(@sort_join)
+
       joins = []
-      joins << @joins     if @joins
-      joins << @sort_join if @sort_join
+      joins << @joins     if defined?(@joins)
+      joins << @sort_join if defined?(@sort_join)
 
       joins.flatten.collect do |join|
         sanitize_condition(join)

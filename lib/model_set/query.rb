@@ -74,7 +74,7 @@ class ModelSet
 
     def offset
       if limit
-        @offset ||= @page ? (@page - 1) * limit : 0
+        @offset ||= defined?(@page) ? (@page - 1) * limit : 0
       end
     end
 
