@@ -12,7 +12,6 @@ require_relative 'model_set/sql_base_query'
 require_relative 'model_set/sql_query'
 require_relative 'model_set/raw_sql_query'
 require_relative 'model_set/solr_query'
-require_relative 'model_set/sphinx_query'
 
 require_relative 'concerns/has_model_set'
 
@@ -340,7 +339,6 @@ class ModelSet
     :set    => SetQuery,
     :sql    => SQLQuery,
     :solr   => SolrQuery,
-    :sphinx => SphinxQuery,
     :raw    => RawQuery,
   } if not defined?(QUERY_TYPES)
 
