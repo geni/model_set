@@ -1,16 +1,6 @@
 require 'test/unit'
 require 'pp'
 
-module CaptureRubyWarnings
-  def warn(message)
-    return if message =~ /assigned but unused variable/
-    return if caller[0] =~ /vendor/ # Ignore warnings from vendored code
-    super
-  end
-end
-
-Warning.extend(CaptureRubyWarnings)
-
 unless defined?($SKIP_COVERAGE)
   require 'simplecov'
   SimpleCov.start do
