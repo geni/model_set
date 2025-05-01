@@ -11,7 +11,13 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/geni/model_set'
   gem.license       = 'MIT'
 
-  # gem dependencies in Gemfile
+  # development dependencies in Gemfile
+
+  gem.add_dependency 'activerecord', '~>8.0'
+  gem.add_dependency 'deep_clonable'
+
+# specified in Gemfile
+# gem 'ordered_set', :git => 'https://github.com/geni/ordered_set.git', :ref => 'v2.0.0'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

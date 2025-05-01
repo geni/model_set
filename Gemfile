@@ -2,8 +2,6 @@ source "http://www.rubygems.org"
 
 gemspec
 
-gem 'activerecord', '~>8.0'
-gem 'deep_clonable'
 gem 'ordered_set', :git => 'https://github.com/geni/ordered_set.git', :ref => 'v2.0.0'
 
 group :development, :test do
