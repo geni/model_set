@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'deep_clonable',  '>= 1.1.0'
   gem.add_dependency 'ordered_set',    '>= 1.0.1'
+  gem.add_dependency 'rsolr'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
