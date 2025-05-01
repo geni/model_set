@@ -373,7 +373,7 @@ class ModelSet
     :sql
   end
 
-  [:add_conditions!, :add_joins!, :in!, :invert!, :order_by!, :to_conditions].each do |method_name|
+  [:add_conditions!, :add_joins!, :in!, :invert!, :order_by!].each do |method_name|
     clone_method method_name
     define_method(method_name) do |*args|
       # Use the default query engine if none is specified.
