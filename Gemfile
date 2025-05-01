@@ -8,7 +8,6 @@ group :development, :test do
   gem 'method_source'
   gem 'pg'
   gem 'rake'
-  gem 'rsolr'
   gem 'simplecov',  :require => false
   gem 'test-unit'
 end

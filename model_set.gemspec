@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activerecord', '~>8.0'
   gem.add_dependency 'deep_clonable'
+  gem.add_dependency 'rsolr'
 
 # specified in Gemfile
 # gem 'ordered_set', :git => 'https://github.com/geni/ordered_set.git', :ref => 'v2.0.0'
