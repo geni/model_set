@@ -222,6 +222,7 @@ class ModelSetTest < Test::Unit::TestCase
   end
 
   class Robot < ActiveRecord::Base
+    serialize :classification
   end
 
   class RobotSet < ModelSet
