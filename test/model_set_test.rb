@@ -63,7 +63,7 @@ class ModelSetTest < Test::Unit::TestCase
   end
 
   class Hero < ActiveRecord::Base
-    set_table_name 'heroes'
+    self.table_name = 'heroes'
     has_set :superpowers, :through => :hero_superpowers, :other_key => :power_id
     has_set :pets, :class_name => 'Superpet', :own_key => :owner_id do
       def dogs!
