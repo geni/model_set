@@ -16,7 +16,6 @@ require_relative 'model_set/sphinx_query'
 
 class ModelSet
   include Enumerable
-  include ActiveSupport::CoreExtensions::Array::Conversions
 
   deep_clonable
 
@@ -635,28 +634,29 @@ private
       @add_fields       = nil unless defined?(@add_fields)
       @included_models  = nil unless defined?(@included_models)
 
-      if @select_fields.nil? and @add_fields.nil? and @included_models.nil?
-        models = model_class.send("find_all_by_#{id_field}", ids_to_fetch.to_a)
+      if @select_fields.nil? && @add_fields.nil? && @included_models.nil?
+        models = model_class.where(id_field => ids_to_fetch.to_a)
       else
         fields = @select_fields || ["#{table_name}.*"]
         joins  = []
-        @add_fields and @add_fields.each do |field, join|
+        @add_fields&.each do |field, join|
           fields << field
           joins  << join
         end
         joins.uniq!
 
-        models = model_class.find(:all,
-          :select     => fields.compact.join(','),
-          :joins      => joins.compact.join(' '),
-          :conditions => db.ids_clause(ids_to_fetch, id_field_with_prefix, self.class.id_type),
-          :include    => @included_models
-        )
+        models = model_class.
+                  where(db.ids_clause(ids_to_fetch, id_field_with_prefix, self.class.id_type)).
+                  select(fields).
+                  joins(joins).
+                  includes(@included_models)
       end
+
       models.each do |model|
         id = model.send(id_field)
         models_by_id[id] ||= after_fetch(model)
       end
+
     end
   end
 
@@ -720,7 +720,7 @@ class ActiveRecord::Base
       Module.new(&extension)
     end
 
-    initial_set_all = if options[:filters] and options[:filters].first == :all
+    initial_set_all = if options[:filters] && options[:filters].first == :all
       options[:filters].shift
       true
     end
