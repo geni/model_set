@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 
 class ModelSetTest < Test::Unit::TestCase
-  class CreateTables < ActiveRecord::Migration
+  class CreateTables < ActiveRecord::Migration[4.2]
     def self.up
       create_table :heroes do |t|
         t.column :name, :string
