@@ -11,7 +11,10 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/geni/model_set'
   gem.license       = 'MIT'
 
-  # gem dependencies in Gemfile
+  # development dependencies in Gemfile
+
+  gem.add_dependency 'deep_clonable',  '>= 1.1.0'
+  gem.add_dependency 'ordered_set',    '>= 1.0.1'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

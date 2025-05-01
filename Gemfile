@@ -2,9 +2,6 @@ source "http://www.rubygems.org"
 
 gemspec
 
-gem 'deep_clonable',  '>= 1.1.0'
-gem 'ordered_set',    '>= 1.0.1'
-
 git 'https://github.com/makandra/rails.git', :branch => '2-3-lts' do
   gem 'rails',        '~>2.3.18'
   gem 'activerecord', :require => false
