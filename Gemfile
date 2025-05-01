@@ -2,13 +2,9 @@ source "http://www.rubygems.org"
 
 gemspec
 
-gem 'deep_clonable',  '>= 1.1.0'
-gem 'ordered_set',    '>= 1.0.1'
-
-git 'https://github.com/makandra/rails.git', :branch => '2-3-lts' do
-  gem 'rails',        '~>2.3.18'
-  gem 'activerecord', :require => false
-end
+gem 'activerecord', '~>8.0'
+gem 'deep_clonable'
+gem 'ordered_set', :git => 'https://github.com/geni/ordered_set.git', :ref => 'v2.0.0'
 
 group :development, :test do
   gem 'method_source'
@@ -16,5 +12,15 @@ group :development, :test do
   gem 'rake'
   gem 'rsolr'
   gem 'simplecov',  :require => false
-  gem 'test-unit' # for shoulda-context
+  gem 'test-unit'
+end
+
+group :vscode do
+  gem 'debase',           :require => false
+  gem 'debug',            :require => false
+  gem 'rainbow',          :require => false
+  gem 'rdbg',             :require => false
+  gem "ruby-debug-ide",   :require => false
+  gem 'ruby-lsp',         :require => false
+  gem 'solargraph',       :require => false
 end
