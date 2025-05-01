@@ -8,33 +8,57 @@ engine" class that will support SQL, Solr, Sphinx, and eventually, other query m
 (possibly raw RecordCache hashes and other search engines).
 
 ## Usage
-
 ```ruby
-  class RobotSet < ModelSet
-  end
+class RobotSet < ModelSet
+end
 
-  set1 = RobotSet.new([1,2,3,4]) # doesn't fetch the models
+set1 = RobotSet.new([1,2,3,4]) # doesn't fetch the models
 
-  set1.each do |model| # fetches all
-    # do something
-  end
+set1.each do |model| # fetches all
+  # do something
+end
 
-  set2 = RobotSet.new([1,2])
+set2 = RobotSet.new([1,2])
 
-  set3 = set1 - set2
-  set3.ids
-  # => [3,4]
+set3 = set1 - set2
+set3.ids
+# => [3,4]
 
-  set3 << Robot.find(5)
-  set3.ids
-  # => [3,4,5]
+set3 << Robot.find(5)
+set3.ids
+# => [3,4,5]
 ```
 
 ## Install
+```ruby
+# Gemfile
+gem 'model_set'
+```
 
-  sudo gem install ninjudd-deep_clonable -s http://gems.github.com
-  sudo gem install ninjudd-ordered_set -s http://gems.github.com
-  sudo gem install ninjudd-model_set -s http://gems.github.com
+## Development
+
+### Clone the repo
+```sh
+git clone git@github.com:geni/model_set.git
+```
+
+### Install gems
+```sh
+bundle install --clean --path vendor/bundle
+```
+
+### Create the database
+```sh
+psql -U postgres -c "CREATE DATABASE  model_set_test OWNER $(whoami | sed -e 's/\./_/g')"
+```
+
+### Run the tests
+```sh
+bundle exec rake test
+
+# view the coverage report
+elinks coverage/index.html
+```
 
 ## License
 
