@@ -24,7 +24,7 @@ class ModelSet
     end
 
     def sanitize_condition(condition)
-      model_class.send(:sanitize_sql, condition)
+      model_class.sanitize_sql_for_assignment(condition)
     end
 
     def transform_condition(condition)
