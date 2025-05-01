@@ -11,7 +11,7 @@ end
 
 Warning.extend(CaptureRubyWarnings)
 
-unless $SKIP_COVERAGE
+unless defined?($SKIP_COVERAGE)
   require 'simplecov'
   SimpleCov.start do
     add_filter 'test'
