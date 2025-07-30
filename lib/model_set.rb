@@ -16,7 +16,10 @@ require_relative 'model_set/sphinx_query'
 
 class ModelSet
   include Enumerable
-  include ActiveSupport::CoreExtensions::Array::Conversions
+
+  if Rails.version <= '3'
+    include ActiveSupport::CoreExtensions::Array::Conversions
+  end
 
   deep_clonable
 
