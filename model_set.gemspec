@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
 
   # development dependencies in Gemfile
 
-  gem.add_dependency 'activerecord', '~>8.0'
+  gem.add_dependency 'activerecord', '~>3.0.0'
   gem.add_dependency 'deep_clonable'
   gem.add_dependency 'rsolr'
 

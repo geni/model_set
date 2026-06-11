@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 
 class ModelSetTest < Test::Unit::TestCase
-  class CreateTables < ActiveRecord::Migration[4.2]
+  class CreateTables < ActiveRecord::Migration
     def self.up
       create_table :heroes do |t|
         t.column :name, :string
@@ -63,7 +63,7 @@ class ModelSetTest < Test::Unit::TestCase
   end
 
   class Hero < ActiveRecord::Base
-    self.table_name = 'heroes'
+    set_table_name 'heroes'
     has_set :superpowers, :through => :hero_superpowers, :other_key => :power_id
     has_set :pets, :class_name => 'Superpet', :own_key => :owner_id do
       def dogs!

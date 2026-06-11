@@ -6,7 +6,7 @@ gem 'ordered_set', :git => 'https://github.com/geni/ordered_set.git', :ref => 'v
 
 group :development, :test do
   gem 'method_source'
-  gem 'pg'
+  gem 'sqlite3', '~> 1.4.0'
   gem 'rake'
   gem 'simplecov',  :require => false
   gem 'test-unit'

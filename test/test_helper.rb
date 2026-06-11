@@ -23,11 +23,7 @@ class Test::Unit::TestCase
 end
 
 ActiveRecord::Base.establish_connection(
-  :adapter  => "postgresql",
-  :host     => "localhost",
-  :username => `whoami`.chomp.tr('.', '_'),
-  :password => '',
-  :database => "model_set_test"
+  :adapter  => "sqlite3",
+  :database => ":memory:"
 )
 ActiveRecord::Migration.verbose = false
-ActiveRecord::Base.connection.client_min_messages = 'error'

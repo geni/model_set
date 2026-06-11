@@ -1,4 +1,27 @@
+# Patch for Rails 3.0.x compatibility with Ruby 2.7+
+# The yaml_as method was removed from Psych in Ruby 2.7
+require 'bigdecimal'
+if RUBY_VERSION >= '2.7' && !BigDecimal.respond_to?(:yaml_as)
+  class BigDecimal
+    def self.yaml_as(tag)
+      # No-op for compatibility
+    end
+  end
+end
+
 require 'active_record'
+
+# Patch for Rails 3.0.x Column::Format incompatibility with Ruby 2.7+
+if RUBY_VERSION >= '2.7' && defined?(ActiveRecord::ConnectionAdapters::Column)
+  module ActiveRecord
+    module ConnectionAdapters
+      class Column
+        Format = Regexp.new(/\A\{?([^}]*)\}?\Z/) unless defined?(Format)
+      end
+    end
+  end
+end
+require 'active_support/core_ext/module/delegation'
 require 'deep_clonable'
 require 'ordered_set'
 
@@ -635,7 +658,7 @@ private
       @included_models  = nil unless defined?(@included_models)
 
       if @select_fields.nil? && @add_fields.nil? && @included_models.nil?
-        models = model_class.where(id_field => ids_to_fetch.to_a)
+        models = model_class.where(db.ids_clause(ids_to_fetch.to_a, id_field_with_prefix, self.class.id_type))
       else
         fields = @select_fields || ["#{table_name}.*"]
         joins  = []

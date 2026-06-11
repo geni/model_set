@@ -8,7 +8,8 @@ module HasIdsClause
       # Make sure all ids are integers to prevent SQL injection attacks.
       ids = ids.collect {|id| id.to_i}
 
-      if kind_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+      if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) &&
+         kind_of?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
         "#{field} = ANY ('{#{ids.join(',')}}'::bigint[])"
       else
         "#{field} IN (#{ids.join(',')})"

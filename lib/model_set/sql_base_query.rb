@@ -18,7 +18,11 @@ class ModelSet
     end
 
     def fetch_id_set(sql)
-      db.select_values(sql).collect { |id| set_class.id_type == :integer ? id.to_i : id }.to_ordered_set
+      # Use select_all instead of select_values for Rails 3.0 + SQLite compatibility
+      # select_values is broken in this combination
+      rows = db.select_all(sql)
+      result = rows.map { |row| row.values.first || row[id_field.to_s] || row[id_field_with_prefix] }
+      result.collect { |id| set_class.id_type == :integer ? id.to_i : id }.to_ordered_set
     end
 
     def db
@@ -26,7 +30,7 @@ class ModelSet
     end
 
     def sanitize_condition(condition)
-      model_class.sanitize_sql_for_assignment(condition)
+      model_class.send(:sanitize_sql, condition)
     end
 
     def transform_condition(condition)

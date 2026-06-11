@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 
 class MultiSetTest < Test::Unit::TestCase
-  class CreateTables < ActiveRecord::Migration[4.2]
+  class CreateTables < ActiveRecord::Migration
     def self.up
       create_table :robots do |t|
         t.string :name
