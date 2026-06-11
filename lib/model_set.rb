@@ -1,4 +1,34 @@
+# Patch for Rails 3.x compatibility with Ruby 2.7+
+# The yaml_as method was removed from Psych in Ruby 2.7
+# BigDecimal.new was removed in Ruby 2.7
+require 'bigdecimal'
+if RUBY_VERSION >= '2.7'
+  class BigDecimal
+    def self.yaml_as(tag)
+      # No-op for compatibility
+    end unless respond_to?(:yaml_as)
+
+    def self.new(*args)
+      # Compatibility wrapper for BigDecimal() function
+      BigDecimal(*args)
+    end unless respond_to?(:new)
+  end
+end
+
 require 'active_record'
+
+# Patch for Rails 3.x Column::Format incompatibility with Ruby 2.7+
+if RUBY_VERSION >= '2.7' && defined?(ActiveRecord::ConnectionAdapters::Column)
+  module ActiveRecord
+    module ConnectionAdapters
+      class Column
+        Format = Regexp.new(/\A\{?([^}]*)\}?\Z/) unless defined?(Format)
+      end
+    end
+  end
+end
+
+require 'active_support/core_ext/module/delegation'
 require 'deep_clonable'
 require 'ordered_set'
 
@@ -17,7 +47,6 @@ require 'model_set/sphinx_query'
 
 class ModelSet
   include Enumerable
-  include ActiveSupport::CoreExtensions::Array::Conversions
 
   deep_clonable
 
@@ -632,28 +661,33 @@ private
     ids_to_fetch = ids_to_fetch - models_by_id.keys
 
     if not ids_to_fetch.empty?
-      if @select_fields.nil? and @add_fields.nil? and @included_models.nil?
-        models = model_class.send("find_all_by_#{id_field}", ids_to_fetch.to_a)
+      @select_fields    = nil unless defined?(@select_fields)
+      @add_fields       = nil unless defined?(@add_fields)
+      @included_models  = nil unless defined?(@included_models)
+
+      if @select_fields.nil? && @add_fields.nil? && @included_models.nil?
+        models = model_class.where(db.ids_clause(ids_to_fetch.to_a, id_field_with_prefix, self.class.id_type))
       else
         fields = @select_fields || ["#{table_name}.*"]
         joins  = []
-        @add_fields and @add_fields.each do |field, join|
+        @add_fields&.each do |field, join|
           fields << field
           joins  << join
         end
         joins.uniq!
 
-        models = model_class.find(:all,
-          :select     => fields.compact.join(','),
-          :joins      => joins.compact.join(' '),
-          :conditions => db.ids_clause(ids_to_fetch, id_field_with_prefix, self.class.id_type),
-          :include    => @included_models
-        )
+        models = model_class.
+                  where(db.ids_clause(ids_to_fetch, id_field_with_prefix, self.class.id_type)).
+                  select(fields).
+                  joins(joins).
+                  includes(@included_models)
       end
+
       models.each do |model|
         id = model.send(id_field)
         models_by_id[id] ||= after_fetch(model)
       end
+
     end
   end
 

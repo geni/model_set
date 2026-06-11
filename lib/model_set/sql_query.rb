@@ -99,11 +99,13 @@ class ModelSet
   private
 
     def select_clause
-      "SELECT #{id_field_with_prefix}"
+      "SELECT #{id_field}"
     end
 
     def from_clause
-      "FROM #{table_name} #{join_clause} WHERE #{conditions.to_s}"
+      clause = "FROM #{table_name} #{join_clause}"
+      clause << " WHERE #{conditions.to_s}" if conditions && !conditions.to_s.empty?
+      clause
     end
 
     def order_clause

@@ -11,16 +11,12 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/ninjudd/model_set"
   gem.license       = 'MIT'
 
-  gem.add_development_dependency 'shoulda', '3.0.1'
-  gem.add_development_dependency 'mocha'
-  gem.add_development_dependency 'rsolr'
-  gem.add_development_dependency 'json'
-  gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'activerecord-postgresql-adapter'
+  # development dependencies in Gemfile
 
   gem.add_dependency 'ordered_set',   '>= 1.0.1'
   gem.add_dependency 'deep_clonable', '>= 1.1.0'
-  gem.add_dependency 'activerecord',  '~> 2.3.9'
+  gem.add_dependency 'activerecord',  '~> 3.2.0'
+  gem.add_dependency 'rsolr'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
