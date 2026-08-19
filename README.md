@@ -54,7 +54,7 @@ psql -U postgres -c "CREATE DATABASE  model_set_test OWNER $(whoami | sed -e 's/
 
 ### Run the tests
 ```sh
-bundle exec rake test
+bundle exec rake test --verbose
 
 # view the coverage report
 elinks coverage/index.html
