@@ -136,6 +136,24 @@ class ModelSetTest < Test::Unit::TestCase
     assert_equal [spidey.id, ironman.id, ken.id], set.ids
   end
 
+  test 'support conditions in an array' do
+    captain  = Hero.create(:name => 'Captain America', :universe => 'Marvel')
+    spidey   = Hero.create(:name => 'Spider Man',      :universe => 'Marvel')
+    ironman  = Hero.create(:name => 'Iron Man',        :universe => 'Marvel')
+    ryu      = Hero.create(:name => 'Ryu',             :universe => 'Capcom')
+    ken      = Hero.create(:name => 'Ken',             :universe => 'Capcom')
+    guile    = Hero.create(:name => 'Guile',           :universe => 'Capcom')
+    batman   = Hero.create(:name => 'Batman',          :universe => 'D.C.'  )
+    superman = Hero.create(:name => 'Superman',        :universe => 'D.C.'  )
+
+    set = HeroSet.all
+    set.add_conditions!(universe: ['Marvel','Capcom'])
+    assert_equal [captain.id, spidey.id, ironman.id, ryu.id, ken.id, guile.id], set.ids
+
+    set.add_conditions!("name LIKE '%n'")
+    assert_equal [spidey.id, ironman.id, ken.id], set.ids
+  end
+
   test 'order and reverse set' do
     captain   = Hero.create(:name => 'Captain America', :universe => 'Marvel')
     spidey    = Hero.create(:name => 'Spider Man',      :universe => 'Marvel')

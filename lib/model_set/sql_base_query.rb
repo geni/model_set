@@ -26,7 +26,14 @@ class ModelSet
     end
 
     def sanitize_condition(condition)
-      model_class.sanitize_sql_for_assignment(condition)
+      # ActiveRecord dropped hash support from sanitize_sql_for_conditions in
+      # Rails 6.1, so build those clauses with the predicate builder instead.
+      if condition.kind_of?(Hash)
+        ast = model_class.unscoped.where(condition).where_clause.ast
+        db.unprepared_statement { db.to_sql(ast) }
+      else
+        model_class.sanitize_sql_for_conditions(condition)
+      end
     end
 
     def transform_condition(condition)
